@@ -26,25 +26,27 @@ var Day = React.createClass({
   propTypes: {
     onDayChange: React.PropTypes.func,
     selected: React.PropTypes.bool,
+    styles: React.PropTypes.object,
     day: React.PropTypes.oneOfType([
         React.PropTypes.number,
         React.PropTypes.string
     ]).isRequired
   },
-  getDefaultProps () {
+  getDefaultProps() {
     return {
-      onDayChange () {}
+      onDayChange: function() { },
+      styles: { },
     }
   },
   render() {
     if (this.props.selected) {
       return (
-        <View style={styles.dayWrapper}>
-          <View style={styles.dayButtonSelected}>
+        <View style={[styles.dayWrapper, this.props.styles.dayWrapper]}>
+          <View style={[styles.dayButtonSelected, this.props.styles.dayButtonSelected]}>
             <TouchableOpacity
-              style={styles.dayButton}
+              style={[styles.dayButton, this.props.styles.dayButton]}
               onPress={() => this.props.onDayChange(this.props.day) }>
-              <Text style={styles.dayLabel}>
+              <Text style={[styles.dayLabel, this.props.styles.dayLabel]}>
                 {this.props.day}
               </Text>
             </TouchableOpacity>
@@ -53,11 +55,11 @@ var Day = React.createClass({
       );
     } else {
       return (
-        <View style={styles.dayWrapper}>
+        <View style={[styles.dayWrapper, this.props.styles.dayWrapper]}>
           <TouchableOpacity
-            style={styles.dayButton}
+            style={[styles.dayButton, this.props.styles.dayButton]}
             onPress={() => this.props.onDayChange(this.props.day) }>
-            <Text style={styles.dayLabel}>
+            <Text style={[styles.dayLabel, this.props.styles.dayLabel]}>
               {this.props.day}
             </Text>
           </TouchableOpacity>
@@ -144,14 +146,14 @@ var Days = React.createClass({
         slotsAccumulator++;
       }
       matrix[i] = [];
-      matrix[i].push(<View style={styles.weekRow}>{columns}</View>);
+      matrix[i].push(<View style={[styles.weekRow, this.props.styles.weekRow]}>{columns}</View>);
     }
 
     return matrix;
   },
 
   render() {
-    return <View style={styles.daysWrapper}>{ this.getCalendarDays() }</View>;
+    return <View style={[styles.daysWrapper, styles.daysWrapper]}>{ this.getCalendarDays() }</View>;
   }
 
 });
@@ -159,8 +161,10 @@ var Days = React.createClass({
 var WeekDaysLabels = React.createClass({
   render() {
     return (
-      <View style={styles.dayLabelsWrapper}>
-        { WEEKDAYS.map((day, key) => { return <Text key={key} style={styles.dayLabels}>{day}</Text> }) }
+      <View style={[styles.dayLabelsWrapper, styles.dayLabelsWrapper]}>
+        { WEEKDAYS.map((day, key) => {
+          return <Text key={key} style={[styles.dayLabels, styles.dayLabels]}>{day}</Text> })
+        }
       </View>
     );
   }
@@ -214,20 +218,20 @@ var HeaderControls = React.createClass({
 
   render() {
     return (
-      <View style={styles.headerWrapper}>
-        <View style={styles.monthSelector}>
+      <View style={[styles.headerWrapper, this.props.styles.headerWrapper]}>
+        <View style={[styles.monthSelector, this.props.styles.monthSelector]}>
           <TouchableOpacity onPress={this.getPrevious}>
-            <Text style={styles.prev}>Previous</Text>
+            <Text style={[styles.prev, this.props.styles.prev]}>Previous</Text>
           </TouchableOpacity>
         </View>
         <View>
-          <Text style={styles.monthLabel}>
+          <Text style={[styles.monthLabel, this.props.styles.monthLabel]}>
             { MONTHS[this.state.selectedMonth] } { this.props.year }
           </Text>
         </View>
-        <View style={styles.monthSelector}>
+        <View style={[styles.monthSelector, this.props.styles.monthSelector]}>
           <TouchableOpacity onPress={this.getNext}>
-            <Text style={styles.next}>Next</Text>
+            <Text style={[styles.next, this.props.styles.next]}>Next</Text>
           </TouchableOpacity>
         </View>
 
@@ -290,12 +294,12 @@ var CalendarPicker = React.createClass({
 
     this.setState({date: date,}, () => {
       this.props.onDateChange(date);
-    });    
+    });
   },
 
   render() {
     return (
-      <View style={styles.calendar}>
+      <View style={[styles.calendar, this.props.styles.calendar]}>
         <HeaderControls
           year= {this.state.year}
           month={this.state.month}
