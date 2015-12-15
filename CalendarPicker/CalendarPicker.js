@@ -26,7 +26,23 @@ var Day = React.createClass({
   propTypes: {
     onDayChange: React.PropTypes.func,
     selected: React.PropTypes.bool,
-    styles: React.PropTypes.object,
+    calendarStyles: React.PropTypes.object,
+    dayWrapperStyles: React.PropTypes.object,
+    dayButtonStyles: React.PropTypes.object,
+    dayButtonSelected: React.PropTypes.object,
+    dayLabelStyles: React.PropTypes.object,
+    dayLabelsWrapperStyles: React.PropTypes.object,
+    daysWrapperStyles: React.PropTypes.object,
+    dayLabelsStyles: React.PropTypes.object,
+    selectedDayStyles: React.PropTypes.object,
+    monthLabelStyles: React.PropTypes.object,
+    headerWrapperStyles: React.PropTypes.object,
+    monthSelectorStyles: React.PropTypes.object,
+    prevStyles: React.PropTypes.object,
+    nextStyles: React.PropTypes.object,
+    yearLabelStyles: React.PropTypes.object,
+    weeksStyles: React.PropTypes.object,
+    weekRowStyles: React.PropTypes.object,
     day: React.PropTypes.oneOfType([
         React.PropTypes.number,
         React.PropTypes.string
@@ -34,19 +50,35 @@ var Day = React.createClass({
   },
   getDefaultProps() {
     return {
-      onDayChange: function() { },
-      styles: { },
+      onDayChange: function() {},
+      calendarStyles: { },
+      dayWrapperStyles: { },
+      dayButtonStyles: { },
+      dayButtonSelected: { },
+      dayLabelStyles: { },
+      dayLabelsWrapperStyles: { },
+      daysWrapperStyles: { },
+      dayLabelsStyles: { },
+      selectedDayStyles: { },
+      monthLabelStyles: { },
+      headerWrapperStyles: { },
+      monthSelectorStyles: { },
+      prevStyles: { },
+      nextStyles: { },
+      yearLabelStyles: { },
+      weeksStyles: { },
+      weekRowStyles: { }
     }
   },
   render() {
     if (this.props.selected) {
       return (
-        <View style={[styles.dayWrapper, this.props.styles.dayWrapper]}>
-          <View style={[styles.dayButtonSelected, this.props.styles.dayButtonSelected]}>
+        <View style={[styles.dayWrapper, this.props.dayWrapperStyles]}>
+          <View style={[styles.dayButtonSelected, this.props.dayButtonSelectedStyles]}>
             <TouchableOpacity
-              style={[styles.dayButton, this.props.styles.dayButton]}
+              style={[styles.dayButton, this.props.dayButtonStyles]}
               onPress={() => this.props.onDayChange(this.props.day) }>
-              <Text style={[styles.dayLabel, this.props.styles.dayLabel]}>
+              <Text style={[styles.dayLabel, this.props.dayLabelStyles]}>
                 {this.props.day}
               </Text>
             </TouchableOpacity>
@@ -55,11 +87,11 @@ var Day = React.createClass({
       );
     } else {
       return (
-        <View style={[styles.dayWrapper, this.props.styles.dayWrapper]}>
+        <View style={[styles.dayWrapper, this.props.dayWrapperStyles]}>
           <TouchableOpacity
-            style={[styles.dayButton, this.props.styles.dayButton]}
+            style={[styles.dayButton, this.props.dayButtonStyles]}
             onPress={() => this.props.onDayChange(this.props.day) }>
-            <Text style={[styles.dayLabel, this.props.styles.dayLabel]}>
+            <Text style={[styles.dayLabel, this.props.dayLabelStyles]}>
               {this.props.day}
             </Text>
           </TouchableOpacity>
@@ -146,14 +178,14 @@ var Days = React.createClass({
         slotsAccumulator++;
       }
       matrix[i] = [];
-      matrix[i].push(<View style={[styles.weekRow, this.props.styles.weekRow]}>{columns}</View>);
+      matrix[i].push(<View style={[styles.weekRow, this.props.weekRowStyles]}>{columns}</View>);
     }
 
     return matrix;
   },
 
   render() {
-    return <View style={[styles.daysWrapper, styles.daysWrapper]}>{ this.getCalendarDays() }</View>;
+    return <View style={[styles.daysWrapper, this.props.daysWrapperStyles]}>{ this.getCalendarDays() }</View>;
   }
 
 });
@@ -161,9 +193,9 @@ var Days = React.createClass({
 var WeekDaysLabels = React.createClass({
   render() {
     return (
-      <View style={[styles.dayLabelsWrapper, styles.dayLabelsWrapper]}>
+      <View style={[styles.dayLabelsWrapper, this.props.dayLabelsWrapperStyles]}>
         { WEEKDAYS.map((day, key) => {
-          return <Text key={key} style={[styles.dayLabels, styles.dayLabels]}>{day}</Text> })
+          return <Text key={key} style={[styles.dayLabels, styles.dayLabelsStyles]}>{day}</Text> })
         }
       </View>
     );
@@ -218,20 +250,20 @@ var HeaderControls = React.createClass({
 
   render() {
     return (
-      <View style={[styles.headerWrapper, this.props.styles.headerWrapper]}>
-        <View style={[styles.monthSelector, this.props.styles.monthSelector]}>
+      <View style={[styles.headerWrapper, this.props.headerWrapperStyles]}>
+        <View style={[styles.monthSelector, this.props.monthSelectorStyles]}>
           <TouchableOpacity onPress={this.getPrevious}>
-            <Text style={[styles.prev, this.props.styles.prev]}>Previous</Text>
+            <Text style={[styles.prev, this.props.prevStyles]}>Previous</Text>
           </TouchableOpacity>
         </View>
         <View>
-          <Text style={[styles.monthLabel, this.props.styles.monthLabel]}>
+          <Text style={[styles.monthLabel, this.props.monthLabelStyles]}>
             { MONTHS[this.state.selectedMonth] } { this.props.year }
           </Text>
         </View>
-        <View style={[styles.monthSelector, this.props.styles.monthSelector]}>
+        <View style={[styles.monthSelector, this.props.monthSelectorStyles]}>
           <TouchableOpacity onPress={this.getNext}>
-            <Text style={[styles.next, this.props.styles.next]}>Next</Text>
+            <Text style={[styles.next, this.props.nextStyles]}>Next</Text>
           </TouchableOpacity>
         </View>
 
@@ -299,7 +331,7 @@ var CalendarPicker = React.createClass({
 
   render() {
     return (
-      <View style={[styles.calendar, this.props.styles.calendar]}>
+      <View style={[styles.calendar, this.props.calendarStyles]}>
         <HeaderControls
           year= {this.state.year}
           month={this.state.month}
